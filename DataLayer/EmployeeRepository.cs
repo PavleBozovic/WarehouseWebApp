@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace DataLayer
 {
-    public class EmployeeRepository
+    public class EmployeeRepository : IEmployeeRepository
     {
         public List<Employee> GetAllEmployees()
         {

@@ -1,63 +1,58 @@
 ﻿using DataLayer;
 using DataLayer.Models;
-using System;
 using System.Collections.Generic;
+using System;
 
 namespace BusinessLayer
 {
     public class EmployeeBusiness
     {
-        private readonly EmployeeRepository employeeRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public EmployeeBusiness()
+        public EmployeeBusiness(IEmployeeRepository employeeRepository)
         {
-            this.employeeRepository = new EmployeeRepository();
+            this._employeeRepository = employeeRepository;
         }
 
         public Employee GetEmployeeById(int employeeId)
         {
-            return employeeRepository.GetEmployeeById(employeeId);
+            return _employeeRepository.GetEmployeeById(employeeId);
         }
 
         public List<Employee> GetAllEmployees()
         {
-            return this.employeeRepository.GetAllEmployees();
+            return this._employeeRepository.GetAllEmployees();
         }
 
         public bool InsertEmployee(Employee employee)
         {
-            if (this.employeeRepository.InsertEmployee(employee) > 0)
-            {
-                return true;
-            }
-            else
+            if (string.IsNullOrEmpty(employee.Role))
             {
                 return false;
             }
+            if (this._employeeRepository.InsertEmployee(employee) > 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public bool UpdateEmployee(Employee employee)
         {
-            if (this.employeeRepository.UpdateEmployee(employee) > 0)
+            if (this._employeeRepository.UpdateEmployee(employee) > 0)
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public bool DeleteEmployee(Employee employee)
         {
-            if (this.employeeRepository.DeleteEmployee(employee) > 0)
+            if (this._employeeRepository.DeleteEmployee(employee) > 0)
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 }

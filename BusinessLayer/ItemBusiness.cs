@@ -1,62 +1,58 @@
 ﻿using DataLayer;
 using DataLayer.Models;
-using System;
 using System.Collections.Generic;
+using System;
 
 namespace BusinessLayer
 {
     public class ItemBusiness
     {
-        private readonly ItemRepository itemRepository;
+        private readonly IItemRepository _itemRepository;
 
-        public ItemBusiness()
+        public ItemBusiness(IItemRepository itemRepository)
         {
-            this.itemRepository = new ItemRepository();
+            this._itemRepository = itemRepository;
         }
 
         public List<Item> GetAllItems()
         {
-            return this.itemRepository.GetAllItems();
+            return this._itemRepository.GetAllItems();
         }
+
         public Item GetItemById(int itemId)
         {
-            return itemRepository.GetItemById(itemId);
+            return _itemRepository.GetItemById(itemId);
         }
 
         public bool InsertItem(Item item)
         {
-            if (this.itemRepository.InsertItem(item) > 0)
-            {
-                return true;
-            }
-            else
+            if (item.Quantity < 1)
             {
                 return false;
             }
+            if (this._itemRepository.InsertItem(item) > 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public bool UpdateItem(Item item)
         {
-            if (this.itemRepository.UpdateItem(item) > 0)
+            if (this._itemRepository.UpdateItem(item) > 0)
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public bool DeleteItem(Item item)
         {
-            if (this.itemRepository.DeleteItem(item) > 0)
+            if (this._itemRepository.DeleteItem(item) > 0)
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 }

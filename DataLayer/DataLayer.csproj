@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="DatabaseConnection.cs" />
     <Compile Include="EmployeeRepository.cs" />
+    <Compile Include="IEmployeeRepository.cs" />
+    <Compile Include="IItemRepository.cs" />
     <Compile Include="ItemRepository.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Item.cs" />
