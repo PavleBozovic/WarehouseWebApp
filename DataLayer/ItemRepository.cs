@@ -1,7 +1,7 @@
 ﻿using DataLayer.Models;
-using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
+using System;
 
 namespace DataLayer
 {
@@ -12,32 +12,32 @@ namespace DataLayer
             List<Item> itemList = new List<Item>();
             using (SqlConnection sqlConnection = new SqlConnection(DatabaseConnection.ConnectionString))
             {
-                SqlCommand sqlCommand = new SqlCommand();
-                sqlCommand.Connection = sqlConnection;
-                sqlCommand.CommandText = "SELECT * FROM Inventory";
+                SqlCommand sqlCommand = new SqlCommand("SELECT Id, Name, Manufacturer, Quantity, Price, Category, Description FROM Inventory", sqlConnection);
                 sqlConnection.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
 
                 while (sqlDataReader.Read())
                 {
                     Item item = new Item();
-                    item.Id = sqlDataReader.GetInt32(0);
-                    item.Name = sqlDataReader.GetString(1);
-                    item.Manufacturer = sqlDataReader.GetString(2);
-                    item.Quantity = sqlDataReader.GetInt32(3);
-                    item.Description = sqlDataReader.GetString(4);
+                    item.Id = (int)sqlDataReader["Id"];
+                    item.Name = (string)sqlDataReader["Name"];
+                    item.Manufacturer = (string)sqlDataReader["Manufacturer"];
+                    item.Quantity = (int)sqlDataReader["Quantity"];
+                    item.Price = (decimal)sqlDataReader["Price"];
+                    item.Category = (string)sqlDataReader["Category"];
+                    item.Description = sqlDataReader["Description"] == DBNull.Value ? null : (string)sqlDataReader["Description"];
                     itemList.Add(item);
                 }
             }
             return itemList;
         }
+
         public Item GetItemById(int itemId)
         {
             using (SqlConnection sqlConnection = new SqlConnection(DatabaseConnection.ConnectionString))
             {
-                SqlCommand sqlCommand = new SqlCommand();
-                sqlCommand.Connection = sqlConnection;
-                sqlCommand.CommandText = "SELECT * FROM Inventory WHERE Id = @ItemId";
+                string query = "SELECT Id, Name, Manufacturer, Quantity, Price, Category, Description FROM Inventory WHERE Id = @ItemId";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@ItemId", itemId);
                 sqlConnection.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
@@ -45,10 +45,13 @@ namespace DataLayer
                 if (sqlDataReader.Read())
                 {
                     Item item = new Item();
-                    item.Id = sqlDataReader.GetInt32(0);
-                    item.Name = sqlDataReader.GetString(1);
-                    item.Manufacturer = sqlDataReader.GetString(2);
-                    item.Quantity = sqlDataReader.GetInt32(3);
+                    item.Id = (int)sqlDataReader["Id"];
+                    item.Name = (string)sqlDataReader["Name"];
+                    item.Manufacturer = (string)sqlDataReader["Manufacturer"];
+                    item.Quantity = (int)sqlDataReader["Quantity"];
+                    item.Price = (decimal)sqlDataReader["Price"];
+                    item.Category = (string)sqlDataReader["Category"];
+                    item.Description = sqlDataReader["Description"] == DBNull.Value ? null : (string)sqlDataReader["Description"];
                     return item;
                 }
                 else
@@ -66,6 +69,7 @@ namespace DataLayer
                                "VALUES (@Name, @Manufacturer, @Quantity, @Price, @Category, @Description)";
 
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
                 sqlCommand.Parameters.AddWithValue("@Name", item.Name);
                 sqlCommand.Parameters.AddWithValue("@Manufacturer", item.Manufacturer);
                 sqlCommand.Parameters.AddWithValue("@Quantity", item.Quantity);
@@ -105,9 +109,10 @@ namespace DataLayer
         {
             using (SqlConnection sqlConnection = new SqlConnection(DatabaseConnection.ConnectionString))
             {
-                SqlCommand sqlCommand = new SqlCommand();
-                sqlCommand.Connection = sqlConnection;
-                sqlCommand.CommandText = string.Format("DELETE FROM Inventory WHERE Id='{0}'", item.Id);
+                string query = "DELETE FROM Inventory WHERE Id = @Id";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@Id", item.Id);
+
                 sqlConnection.Open();
                 return sqlCommand.ExecuteNonQuery();
             }

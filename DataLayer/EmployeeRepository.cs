@@ -1,7 +1,7 @@
 ﻿using DataLayer.Models;
-using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
+using System;
 
 namespace DataLayer
 {
@@ -12,32 +12,30 @@ namespace DataLayer
             List<Employee> employeeList = new List<Employee>();
             using (SqlConnection sqlConnection = new SqlConnection(DatabaseConnection.ConnectionString))
             {
-                SqlCommand sqlCommand = new SqlCommand();
-                sqlCommand.Connection = sqlConnection;
-                sqlCommand.CommandText = "SELECT * FROM Employees";
+                SqlCommand sqlCommand = new SqlCommand("SELECT Id, Name, Surname, Role, Password FROM Employees", sqlConnection);
                 sqlConnection.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
 
                 while (sqlDataReader.Read())
                 {
                     Employee e = new Employee();
-                    e.Id = sqlDataReader.GetInt32(0);
-                    e.Name = sqlDataReader.GetString(1);
-                    e.Surname = sqlDataReader.GetString(2);
-                    e.Role = sqlDataReader.GetString(3);
-                    e.Password = sqlDataReader.GetString(4);
+                    e.Id = (int)sqlDataReader["Id"];
+                    e.Name = (string)sqlDataReader["Name"];
+                    e.Surname = (string)sqlDataReader["Surname"];
+                    e.Role = (string)sqlDataReader["Role"];
+                    e.Password = (string)sqlDataReader["Password"];
                     employeeList.Add(e);
                 }
             }
             return employeeList;
         }
+
         public Employee GetEmployeeById(int employeeId)
         {
             using (SqlConnection sqlConnection = new SqlConnection(DatabaseConnection.ConnectionString))
             {
-                SqlCommand sqlCommand = new SqlCommand();
-                sqlCommand.Connection = sqlConnection;
-                sqlCommand.CommandText = "SELECT * FROM Employees WHERE Id = @EmployeeId";
+                string query = "SELECT Id, Name, Surname, Role, Password FROM Employees WHERE Id = @EmployeeId";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@EmployeeId", employeeId);
 
                 sqlConnection.Open();
@@ -46,11 +44,11 @@ namespace DataLayer
                 if (sqlDataReader.Read())
                 {
                     Employee employee = new Employee();
-                    employee.Id = sqlDataReader.GetInt32(0);
-                    employee.Name = sqlDataReader.GetString(1);
-                    employee.Surname = sqlDataReader.GetString(2);
-                    employee.Role = sqlDataReader.GetString(3);
-                    employee.Password = sqlDataReader.GetString(4);
+                    employee.Id = (int)sqlDataReader["Id"];
+                    employee.Name = (string)sqlDataReader["Name"];
+                    employee.Surname = (string)sqlDataReader["Surname"];
+                    employee.Role = (string)sqlDataReader["Role"];
+                    employee.Password = (string)sqlDataReader["Password"];
                     return employee;
                 }
                 else
@@ -78,6 +76,7 @@ namespace DataLayer
                 return sqlCommand.ExecuteNonQuery();
             }
         }
+
         public int UpdateEmployee(Employee employee)
         {
             using (SqlConnection sqlConnection = new SqlConnection(DatabaseConnection.ConnectionString))
@@ -102,9 +101,10 @@ namespace DataLayer
         {
             using (SqlConnection sqlConnection = new SqlConnection(DatabaseConnection.ConnectionString))
             {
-                SqlCommand sqlCommand = new SqlCommand();
-                sqlCommand.Connection = sqlConnection;
-                sqlCommand.CommandText = string.Format("DELETE FROM Employees WHERE Id='{0}'", employee.Id);
+                string query = "DELETE FROM Employees WHERE Id = @Id";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@Id", employee.Id);
+
                 sqlConnection.Open();
                 return sqlCommand.ExecuteNonQuery();
             }
