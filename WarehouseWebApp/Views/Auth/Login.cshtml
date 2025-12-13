@@ -1,0 +1,48 @@
+﻿@model DataLayer.Models.Employee
+@{
+    ViewData["Title"] = "Login";
+}
+
+@if (TempData["GuestMessage"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Action Required:</strong> @TempData["GuestMessage"]
+    </div>
+}
+
+<h1>Employee Login</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Auth" asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label for="Id" class="control-label">Employee ID</label>
+                <input asp-for="Id" class="form-control" type="text" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="Password" class="control-label">Password</label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Log In" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<p>
+    <a asp-controller="Auth" asp-action="Skip" class="btn btn-warning">Proceed without logging in (Guest Access)</a>
+</p>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

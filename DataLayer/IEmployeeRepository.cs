@@ -14,5 +14,6 @@ namespace DataLayer
         int InsertEmployee(Employee employee);
         int UpdateEmployee(Employee employee);
         int DeleteEmployee(Employee employee);
+        Employee GetEmployeeByIdAndPassword(int Id, string password);
     }
 }

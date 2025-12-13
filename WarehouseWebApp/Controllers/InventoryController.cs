@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BusinessLayer;
+using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 
 namespace PresentationLayer.Controllers
 {
+    [Authorize]
     public class InventoryController : Controller
     {
         private readonly ItemBusiness _itemBusiness;
@@ -12,13 +16,27 @@ namespace PresentationLayer.Controllers
             this._itemBusiness = itemBusiness;
         }
 
+        private bool IsGuest()
+        {
+            return (User?.Identity?.IsAuthenticated ?? false) && User.IsInRole("Guest");
+        }
+
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var items = _itemBusiness.GetAllItems();
             return View(items);
         }
+
         public IActionResult Create()
         {
+            if (IsGuest())
+            {
+                TempData["GuestMessage"] = "You must log in as an employee to create new inventory items.";
+                HttpContext.SignOutAsync("CookieAuth");
+                return RedirectToAction("Login", "Auth");
+            }
+
             return View(new DataLayer.Models.Item());
         }
 
@@ -26,6 +44,13 @@ namespace PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(DataLayer.Models.Item item)
         {
+            if (IsGuest())
+            {
+                TempData["GuestMessage"] = "You must log in as an employee to create new inventory items.";
+                HttpContext.SignOutAsync("CookieAuth");
+                return RedirectToAction("Login", "Auth");
+            }
+
             if (ModelState.IsValid)
             {
                 var result = _itemBusiness.InsertItem(item);
@@ -41,6 +66,13 @@ namespace PresentationLayer.Controllers
 
         public IActionResult Edit(int id)
         {
+            if (IsGuest())
+            {
+                TempData["GuestMessage"] = "You must log in as an employee to edit inventory items.";
+                HttpContext.SignOutAsync("CookieAuth");
+                return RedirectToAction("Login", "Auth");
+            }
+
             var item = _itemBusiness.GetItemById(id);
 
             if (item == null)
@@ -55,6 +87,13 @@ namespace PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(DataLayer.Models.Item item)
         {
+            if (IsGuest())
+            {
+                TempData["GuestMessage"] = "You must log in as an employee to edit inventory items.";
+                HttpContext.SignOutAsync("CookieAuth");
+                return RedirectToAction("Login", "Auth");
+            }
+
             if (item.Id == 0)
             {
                 return NotFound();
@@ -76,6 +115,13 @@ namespace PresentationLayer.Controllers
 
         public IActionResult Delete(int id)
         {
+            if (IsGuest())
+            {
+                TempData["GuestMessage"] = "You must log in as an employee to delete inventory items.";
+                HttpContext.SignOutAsync("CookieAuth");
+                return RedirectToAction("Login", "Auth");
+            }
+
             var item = _itemBusiness.GetItemById(id);
 
             if (item == null)
@@ -85,10 +131,17 @@ namespace PresentationLayer.Controllers
             return View(item);
         }
 
-        [HttpPost, ActionName("Delete")] 
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
+            if (IsGuest())
+            {
+                TempData["GuestMessage"] = "You must log in as an employee to delete inventory items.";
+                HttpContext.SignOutAsync("CookieAuth");
+                return RedirectToAction("Login", "Auth");
+            }
+
             DataLayer.Models.Item itemToDelete = new DataLayer.Models.Item { Id = id };
 
             bool result = _itemBusiness.DeleteItem(itemToDelete);
@@ -104,6 +157,5 @@ namespace PresentationLayer.Controllers
                 return RedirectToAction(nameof(Delete), new { id = id });
             }
         }
-
     }
 }

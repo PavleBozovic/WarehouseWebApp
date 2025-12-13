@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BusinessLayer;
 using DataLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PresentationLayer.Controllers
 {
+    [Authorize(Policy = "AdminOnly")]
     public class EmployeeController : Controller
     {
         private readonly EmployeeBusiness _employeeBusiness;
@@ -36,7 +38,7 @@ namespace PresentationLayer.Controllers
                     TempData["SuccessMessage"] = $"Employee '{employee.Name}' added successfully!";
                     return RedirectToAction(nameof(Index));
                 }
-                ModelState.AddModelError(string.Empty, "Unable to add employee. Please, check for invalid inputs (like missing Role).");
+                ModelState.AddModelError(string.Empty, "Unable to add employee. Please, check for invalid inputs.");
             }
             return View(employee);
         }

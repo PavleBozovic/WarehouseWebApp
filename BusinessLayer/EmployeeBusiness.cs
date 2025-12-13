@@ -54,5 +54,9 @@ namespace BusinessLayer
             }
             return false;
         }
+        public Employee ValidateEmployeeCredentials(int id, string password)
+        {
+            return _employeeRepository.GetEmployeeByIdAndPassword(id, password);
+        }
     }
 }

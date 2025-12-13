@@ -15,6 +15,20 @@ builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<EmployeeBusiness>();
 builder.Services.AddScoped<ItemBusiness>();
 
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth", options =>
+    {
+        options.Cookie.Name = "YourAppCookie";
+        options.LoginPath = "/Auth/Login";
+        options.AccessDeniedPath = "/Auth/AccessDenied"; 
+    });
+
+builder.Services.AddAuthorization(options =>
+{ 
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Administrator"));
+});
+
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -28,6 +42,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 

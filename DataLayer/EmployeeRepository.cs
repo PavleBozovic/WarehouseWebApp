@@ -30,13 +30,13 @@ namespace DataLayer
             return employeeList;
         }
 
-        public Employee GetEmployeeById(int employeeId)
+        public Employee GetEmployeeById(int Id)
         {
             using (SqlConnection sqlConnection = new SqlConnection(DatabaseConnection.ConnectionString))
             {
-                string query = "SELECT Id, Name, Surname, Role, Password FROM Employees WHERE Id = @EmployeeId";
+                string query = "SELECT Id, Name, Surname, Role, Password FROM Employees WHERE Id = @Id";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@EmployeeId", employeeId);
+                sqlCommand.Parameters.AddWithValue("@Id", Id);
 
                 sqlConnection.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
@@ -108,6 +108,39 @@ namespace DataLayer
                 sqlConnection.Open();
                 return sqlCommand.ExecuteNonQuery();
             }
+        }
+
+        public Employee GetEmployeeByIdAndPassword(int Id, string password)
+        {
+            Employee employee = null;
+            string connectionString = DatabaseConnection.ConnectionString;
+
+            string sql = "SELECT Id, Name, Surname, Role FROM Employees WHERE Id = @Id AND Password = @Password";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(sql, connection);
+
+                command.Parameters.AddWithValue("@Id", Id);
+                command.Parameters.AddWithValue("@Password", password);
+
+                connection.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        employee = new Employee
+                        {
+                            Id = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Surname = reader.GetString(2),
+                            Role = reader.GetString(3),
+                        };
+                    }
+                }
+            }
+            return employee;
         }
     }
 }
