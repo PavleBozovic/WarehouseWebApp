@@ -1,8 +1,8 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using WarehouseWebApp.Models;
 
-namespace WarehouseWebApp.Controllers
+namespace PresentationLayer.Controllers
 {
     public class HomeController : Controller
     {

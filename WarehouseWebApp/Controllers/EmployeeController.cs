@@ -6,14 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 namespace PresentationLayer.Controllers
 {
     [Authorize(Policy = "AdminOnly")]
-    public class EmployeeController : Controller
+    public class EmployeeController(EmployeeBusiness employeeBusiness) : Controller
     {
-        private readonly EmployeeBusiness _employeeBusiness;
-
-        public EmployeeController(EmployeeBusiness employeeBusiness)
-        {
-            this._employeeBusiness = employeeBusiness;
-        }
+        private readonly EmployeeBusiness _employeeBusiness = employeeBusiness;
 
         public IActionResult Index()
         {
@@ -93,7 +88,7 @@ namespace PresentationLayer.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            Employee employeeToDelete = new Employee { Id = id };
+            var employeeToDelete = new Employee { Id = id };
 
             bool result = _employeeBusiness.DeleteEmployee(employeeToDelete);
 
