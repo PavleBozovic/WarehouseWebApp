@@ -1,13 +1,13 @@
 # WarehouseWebApp
 
-A 3-layer ASP.NET Core MVC application for managing warehouse stock and employee access.
+A secure three-tier Web application built with ASP.NET Core MVC for managing warehouse stock and employee access.
 
 ## Architecture
 
-The project is organized into three layers to ensure separation of concerns:
+The project follows a **Three-Tier Architecture** to ensure a professional separation of concerns:
 
-* **Presentation Layer (MVC):** Manages the UI, Controllers, and Middleware configuration.
-* **Business Layer:** Handles logic, data validation, and bridges the UI and Data layers.
+* **Presentation Layer (MVC):** Manages the User Interface, Controllers, and Middleware.
+* **Business Layer:** Processes logic, validates data, and acts as a bridge between the UI and Data layers.
 * **Data Layer:** Handles raw SQL communication using ADO.NET and defines Data Models.
 
 
@@ -19,25 +19,25 @@ The project is organized into three layers to ensure separation of concerns:
 * **Backend:** ASP.NET Core
 * **Database:** SQL Server (ADO.NET / Microsoft.Data.SqlClient)
 * **Authentication:** Cookie-based Authentication with Role-Based Access Control (RBAC)
-* **Frontend:** Razor Pages, Bootstrap, JavaScript (AJAX/jQuery)
+* **Frontend:** Razor Pages, Bootstrap, CSS, and JavaScript.
 
 ---
 
 ## File Map
 
 ### DataLayer
-* **Models/**: `Item.cs`, `Employee.cs` (Contains Data Annotations for validation).
-* **Repositories/**: `ItemRepository.cs`, `EmployeeRepository.cs` (SQL logic).
+* **Models/**: `Item.cs`, `Employee.cs` (Includes Data Annotations for server-side validation).
+* **Repositories/**: `ItemRepository.cs`, `EmployeeRepository.cs` (Contains SQL queries and Command logic).
 * **Interfaces**: `IItemRepository.cs`, `IEmployeeRepository.cs`.
 
 ### BusinessLayer
-* **ItemBusiness.cs**: Contains CRUD logic and search filtering.
-* **EmployeeBusiness.cs**: Handles employee validation and password security logic.
+* **ItemBusiness.cs**: Handles inventory CRUD logic and data type conversions.
+* **EmployeeBusiness.cs**: Manages employee validation, credentials, and password security logic.
 
 ### PresentationLayer
 * **Controllers/**: `InventoryController.cs`, `AuthController.cs`, `EmployeeController.cs`.
-* **Views/**: Razor views including `_InventoryTable.cshtml` (Partial View for AJAX updates).
-* **Program.cs**: Configures Dependency Injection (DI) and Authentication Middleware.
+* **Views/**: Razor views for Inventory management and Employee administration.
+* **Program.cs**: Configures Dependency Injection (DI), Authentication, and Authorization policies.
 
 
 
@@ -45,10 +45,9 @@ The project is organized into three layers to ensure separation of concerns:
 
 ## Database Schema
 
-Run the following SQL script to set up the necessary tables for this application:
+Use this SQL script to create the tables required for the application:
 
 ```sql
--- Create Inventory Table
 CREATE TABLE [dbo].[Inventory] (
     [Id]           INT             IDENTITY (1, 1) NOT NULL,
     [Name]         NVARCHAR (100)  NOT NULL,
@@ -60,7 +59,6 @@ CREATE TABLE [dbo].[Inventory] (
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
--- Create Employee Table
 CREATE TABLE [dbo].[Employees] (
     [Id]       INT            IDENTITY (1, 1) NOT NULL,
     [Name]     NVARCHAR (50)  NOT NULL,
