@@ -1,54 +1,73 @@
 # WarehouseWebApp
-Inventory Management System
+# Inventory Management System
+
 A 3-layer ASP.NET Core MVC application for managing warehouse stock and employee access.
 
-Architecture Overview
-The project is divided into three distinct layers to ensure separation of concerns:
+## Architecture
 
-Presentation Layer (MVC): Handles UI, Controllers, and Cookie-based Authentication.
+The project is organized into three layers to ensure separation of concerns:
 
-Business Layer: Processes logic, validates data, and bridges the UI and Database.
+* **Presentation Layer (MVC):** Manages the UI, Controllers, and Middleware configuration.
+* **Business Layer:** Handles logic, data validation, and bridges the UI and Data layers.
+* **Data Layer:** Handles raw SQL communication using ADO.NET and defines Data Models.
 
-Data Layer: Manages raw SQL database communication and data models.
 
-Core Features
-🔐 Authentication & Authorization
-Cookie Authentication: Implemented in Program.cs and AuthController.cs.
 
-Role-Based Access Control (RBAC): Restricts "Guest" users from performing Create, Edit, or Delete operations.
+---
 
-Claims-Based Identity: Stores full names and roles within the authentication cookie for personalized UI.
+## Technical Stack
 
-📦 Inventory Management
-CRUD Operations: Full Create, Read, Update, and Delete functionality for warehouse items.
+* **Backend:** ASP.NET Core
+* **Database:** SQL Server (ADO.NET / Microsoft.Data.SqlClient)
+* **Authentication:** Cookie-based Authentication with Role-Based Access Control (RBAC)
+* **Frontend:** Razor Pages, Bootstrap, JavaScript (AJAX/jQuery)
 
-Model Validation: Server-side validation using Data Annotations (e.g., [Required], [Range]) to ensure data integrity.
+---
 
-Real-time Search: Partial view implementation allowing instant inventory filtering via AJAX.
+## File Map
 
-Project Structure & File Map
-DataLayer
-Models/: Contains Item.cs and Employee.cs (POCO classes).
+### DataLayer
+* **Models/**: `Item.cs`, `Employee.cs` (Contains Data Annotations for validation).
+* **Repositories/**: `ItemRepository.cs`, `EmployeeRepository.cs` (SQL logic).
+* **Interfaces**: `IItemRepository.cs`, `IEmployeeRepository.cs`.
 
-Repositories/: Contains ItemRepository.cs and EmployeeRepository.cs using ADO.NET and SQL.
+### BusinessLayer
+* **ItemBusiness.cs**: Contains CRUD logic and search filtering.
+* **EmployeeBusiness.cs**: Handles employee validation and password security logic.
 
-IItemRepository.cs: Interface defining database contracts.
+### PresentationLayer
+* **Controllers/**: `InventoryController.cs`, `AuthController.cs`, `EmployeeController.cs`.
+* **Views/**: Razor views including `_InventoryTable.cshtml` (Partial View for AJAX updates).
+* **Program.cs**: Configures Dependency Injection (DI) and Authentication Middleware.
 
-BusinessLayer
-ItemBusiness.cs: Handles item logic, including the search query filter and result conversion.
 
-EmployeeBusiness.cs: Manages employee validation and password persistence logic.
 
-PresentationLayer
-Controllers/: Logic for Inventory, Employee, and Auth.
+---
 
-Views/: Razor pages including _InventoryTable.cshtml (Partial View) and Edit.cshtml with JavaScript features.
+## Database Schema
 
-Program.cs: Configures Dependency Injection (DI) and Middleware.
+Run the following SQL script to set up the necessary tables for this application:
 
-Technical Implementation Details
-Dependency Injection: Services are registered as Scoped in Program.cs using interfaces to decouple layers.
+```sql
+-- Create Inventory Table
+CREATE TABLE [dbo].[Inventory] (
+    [Id]           INT             IDENTITY (1, 1) NOT NULL,
+    [Name]         NVARCHAR (100)  NOT NULL,
+    [Manufacturer] NVARCHAR (100)  NOT NULL,
+    [Quantity]     INT             NOT NULL,
+    [Price]        DECIMAL (18, 2) NOT NULL,
+    [Category]     NVARCHAR (50)   NOT NULL,
+    [Description]  NVARCHAR (MAX)  NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
 
-Frontend Logic: JavaScript used in Edit views for dynamic password toggles and Index views for AJAX search.
-
-Security: Password fields in edit views are intentionally cleared to prevent accidental exposure or overwriting.
+-- Create Employee Table
+CREATE TABLE [dbo].[Employees] (
+    [Id]       INT            IDENTITY (1, 1) NOT NULL,
+    [Name]     NVARCHAR (50)  NOT NULL,
+    [Surname]  NVARCHAR (50)  NOT NULL,
+    [Username] NVARCHAR (50)  NOT NULL UNIQUE,
+    [Password] NVARCHAR (255) NOT NULL,
+    [Role]     NVARCHAR (20)  NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
