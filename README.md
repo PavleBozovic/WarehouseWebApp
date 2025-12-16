@@ -1,5 +1,5 @@
 # WarehouseWebApp
-# Inventory Management System
+## Inventory Management System
 
 A 3-layer ASP.NET Core MVC application for managing warehouse stock and employee access.
 
