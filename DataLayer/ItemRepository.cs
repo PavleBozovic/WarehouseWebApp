@@ -18,14 +18,16 @@ namespace DataLayer
 
                 while (sqlDataReader.Read())
                 {
-                    Item item = new Item();
-                    item.Id = (int)sqlDataReader["Id"];
-                    item.Name = (string)sqlDataReader["Name"];
-                    item.Manufacturer = (string)sqlDataReader["Manufacturer"];
-                    item.Quantity = (int)sqlDataReader["Quantity"];
-                    item.Price = (decimal)sqlDataReader["Price"];
-                    item.Category = (string)sqlDataReader["Category"];
-                    item.Description = sqlDataReader["Description"] == DBNull.Value ? null : (string)sqlDataReader["Description"];
+                    Item item = new Item
+                    {
+                        Id = (int)sqlDataReader["Id"],
+                        Name = (string)sqlDataReader["Name"],
+                        Manufacturer = (string)sqlDataReader["Manufacturer"],
+                        Quantity = (int)sqlDataReader["Quantity"],
+                        Price = (decimal)sqlDataReader["Price"],
+                        Category = (string)sqlDataReader["Category"],
+                        Description = sqlDataReader["Description"] == DBNull.Value ? null : (string)sqlDataReader["Description"]
+                    };
                     itemList.Add(item);
                 }
             }
@@ -44,14 +46,16 @@ namespace DataLayer
 
                 if (sqlDataReader.Read())
                 {
-                    Item item = new Item();
-                    item.Id = (int)sqlDataReader["Id"];
-                    item.Name = (string)sqlDataReader["Name"];
-                    item.Manufacturer = (string)sqlDataReader["Manufacturer"];
-                    item.Quantity = (int)sqlDataReader["Quantity"];
-                    item.Price = (decimal)sqlDataReader["Price"];
-                    item.Category = (string)sqlDataReader["Category"];
-                    item.Description = sqlDataReader["Description"] == DBNull.Value ? null : (string)sqlDataReader["Description"];
+                    Item item = new Item
+                    {
+                        Id = (int)sqlDataReader["Id"],
+                        Name = (string)sqlDataReader["Name"],
+                        Manufacturer = (string)sqlDataReader["Manufacturer"],
+                        Quantity = (int)sqlDataReader["Quantity"],
+                        Price = (decimal)sqlDataReader["Price"],
+                        Category = (string)sqlDataReader["Category"],
+                        Description = sqlDataReader["Description"] == DBNull.Value ? null : (string)sqlDataReader["Description"]
+                    };
                     return item;
                 }
                 else

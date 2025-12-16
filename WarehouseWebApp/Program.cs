@@ -8,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
@@ -23,11 +22,8 @@ builder.Services.AddAuthentication("CookieAuth")
         options.AccessDeniedPath = "/Auth/AccessDenied"; 
     });
 
-builder.Services.AddAuthorization(options =>
-{ 
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Administrator"));
-});
-
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("AdminOnly", policy => policy.RequireRole("Administrator"));
 
 var app = builder.Build();
 
@@ -45,10 +41,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
 app.Run();

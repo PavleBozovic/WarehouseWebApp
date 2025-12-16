@@ -8,14 +8,9 @@ using System.Collections.Generic;
 
 namespace PresentationLayer.Controllers
 {
-    public class AuthController : Controller
+    public class AuthController(EmployeeBusiness employeeBusiness) : Controller
     {
-        private readonly EmployeeBusiness _employeeBusiness;
-
-        public AuthController(EmployeeBusiness employeeBusiness)
-        {
-            _employeeBusiness = employeeBusiness;
-        }
+        private readonly EmployeeBusiness _employeeBusiness = employeeBusiness;
 
         public IActionResult Login()
         {

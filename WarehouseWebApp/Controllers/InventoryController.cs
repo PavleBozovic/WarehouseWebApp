@@ -7,14 +7,8 @@ using Microsoft.AspNetCore.Authentication;
 namespace PresentationLayer.Controllers
 {
     [Authorize]
-    public class InventoryController : Controller
+    public class InventoryController(ItemBusiness _itemBusiness) : Controller
     {
-        private readonly ItemBusiness _itemBusiness;
-
-        public InventoryController(ItemBusiness itemBusiness)
-        {
-            this._itemBusiness = itemBusiness;
-        }
 
         private bool IsGuest()
         {

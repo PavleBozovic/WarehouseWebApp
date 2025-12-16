@@ -18,12 +18,14 @@ namespace DataLayer
 
                 while (sqlDataReader.Read())
                 {
-                    Employee e = new Employee();
-                    e.Id = (int)sqlDataReader["Id"];
-                    e.Name = (string)sqlDataReader["Name"];
-                    e.Surname = (string)sqlDataReader["Surname"];
-                    e.Role = (string)sqlDataReader["Role"];
-                    e.Password = (string)sqlDataReader["Password"];
+                    Employee e = new Employee
+                    {
+                        Id = (int)sqlDataReader["Id"],
+                        Name = (string)sqlDataReader["Name"],
+                        Surname = (string)sqlDataReader["Surname"],
+                        Role = (string)sqlDataReader["Role"],
+                        Password = (string)sqlDataReader["Password"]
+                    };
                     employeeList.Add(e);
                 }
             }
@@ -43,12 +45,14 @@ namespace DataLayer
 
                 if (sqlDataReader.Read())
                 {
-                    Employee employee = new Employee();
-                    employee.Id = (int)sqlDataReader["Id"];
-                    employee.Name = (string)sqlDataReader["Name"];
-                    employee.Surname = (string)sqlDataReader["Surname"];
-                    employee.Role = (string)sqlDataReader["Role"];
-                    employee.Password = (string)sqlDataReader["Password"];
+                    Employee employee = new Employee
+                    {
+                        Id = (int)sqlDataReader["Id"],
+                        Name = (string)sqlDataReader["Name"],
+                        Surname = (string)sqlDataReader["Surname"],
+                        Role = (string)sqlDataReader["Role"],
+                        Password = (string)sqlDataReader["Password"]
+                    };
                     return employee;
                 }
                 else
