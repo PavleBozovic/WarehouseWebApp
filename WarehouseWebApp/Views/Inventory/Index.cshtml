@@ -26,12 +26,12 @@
         {
             <tr>
                 <td>@item.Id</td>
-                <td>@item.Name</td>
-                <td>@item.Manufacturer</td>
+                <td class="text-truncate-custom">@item.Name</td>
+                <td class="text-truncate-custom">@item.Manufacturer</td>
                 <td>@item.Quantity</td>
                 <td>@item.Price.ToString("C")</td>
-                <td>@item.Category</td>
-                <td>@item.Description</td>
+                <td class="text-truncate-custom">@item.Category</td>
+                <td class="text-truncate-custom">@item.Description</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-info">Edit</a>
 
