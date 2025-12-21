@@ -2,6 +2,20 @@
 
 A secure three-tier Web application built with ASP.NET Core MVC for managing warehouse stock and employee access.
 
+## System Preview
+
+| Home / Welcome | Login Page |
+| :---: | :---: |
+| <img src="screenshots/Screenshot_1.jpg" width="400"> | <img src="screenshots/Screenshot_2.jpg" width="400"> |
+
+| Inventory List | Employee Management |
+| :---: | :---: |
+| <img src="screenshots/Screenshot_3.jpg" width="400"> | <img src="screenshots/Screenshot_4.jpg" width="400"> |
+
+| Edit Records | Delete Confirmation |
+| :---: | :---: |
+| <img src="screenshots/Screenshot_5.jpg" width="400"> | <img src="screenshots/Screenshot_6.jpg" width="400"> |
+
 ## Architecture
 
 The project follows a **Three-Tier Architecture** to ensure a professional separation of concerns:
