@@ -1,6 +1,6 @@
 # WarehouseWebApp
 
-A secure three-tier Web application built with ASP.NET Core MVC for managing warehouse stock and employee access.
+A secure three tier Web application built with ASP.NET Core MVC for managing warehouse stock and employee access.
 
 ## System Preview
 
@@ -18,7 +18,7 @@ A secure three-tier Web application built with ASP.NET Core MVC for managing war
 
 ## Architecture
 
-The project follows a **Three-Tier Architecture** to ensure a professional separation of concerns:
+The project follows a **Three Tier Architecture** to ensure a professional separation of concerns:
 
 * **Presentation Layer (MVC):** Manages the User Interface, Controllers, and Middleware.
 * **Business Layer:** Processes logic, validates data, and acts as a bridge between the UI and Data layers.
@@ -32,7 +32,7 @@ The project follows a **Three-Tier Architecture** to ensure a professional separ
 
 * **Backend:** ASP.NET Core
 * **Database:** SQL Server (ADO.NET / Microsoft.Data.SqlClient)
-* **Authentication:** Cookie-based Authentication with Role-Based Access Control (RBAC)
+* **Authentication:** Cookie based Authentication with Role Based Access Control (RBAC)
 * **Frontend:** Razor Pages, Bootstrap, CSS, and JavaScript.
 
 ---
@@ -40,7 +40,7 @@ The project follows a **Three-Tier Architecture** to ensure a professional separ
 ## File Map
 
 ### DataLayer
-* **Models/**: `Item.cs`, `Employee.cs` (Includes Data Annotations for server-side validation).
+* **Models/**: `Item.cs`, `Employee.cs` (Includes Data Annotations for server side validation).
 * **Repositories/**: `ItemRepository.cs`, `EmployeeRepository.cs` (Contains SQL queries and Command logic).
 * **Interfaces**: `IItemRepository.cs`, `IEmployeeRepository.cs`.
 
